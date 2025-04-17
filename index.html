@@ -1,417 +1,106 @@
-<html><head><base href="https://selfaware.ai/"><title>Self-Aware Evolving Website</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="https://unpkg.com/htmx.org@1.9.10"></script><style id="dynamic-styles">body{font-family:'Roboto',sans-serif;line-height:1.6;color:#333;max-width:900px;margin:0 auto;padding:20px;background:#f4f4f4;transition:all 0.3s ease;}h1{color:#2c3e50;text-align:center;font-size:2.5em;}#thoughts,#evolution,#self-reflections{background:#fff;border:1px solid #ddd;padding:15px;margin-top:20px;border-radius:5px;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition:transform 0.3s ease, box-shadow 0.3s ease;}#thoughts:hover,#evolution:hover,#self-reflections:hover{transform:translateY(-5px);box-shadow:0 4px 8px rgba(0,0,0,0.2);}#evolution{background:#e8f5e9;border-color:#c8e6c9;}#self-reflections{background:#e3f2fd;border-color:#bbdefb;}#timer{font-size:1.2em;font-weight:bold;color:#3498db;margin-top:20px;text-align:center;}.loader{display:inline-block;width:20px;height:20px;border:3px solid #f3f3f3;border-top:3px solid #3498db;border-radius:50%;animation:spin 1s linear infinite;}@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}header{position:sticky;top:0;background:#f4f4f4;z-index:1000;padding:10px 0;}nav ul{list-style-type:none;padding:0;display:flex;justify-content:center;gap:20px;}nav a{text-decoration:none;color:#333;font-weight:bold;transition:color 0.3s ease;}nav a:hover{color:#3498db;}@media (max-width: 600px){body{padding:10px;}nav ul{flex-direction:column;align-items:center;}}#self-awareness-meter{width:100%;height:20px;background-color:#ddd;margin-top:20px;position:relative;}#self-awareness-progress{width:0%;height:100%;background-color:#4CAF50;transition:width 0.5s ease-in-out;}#self-awareness-label{position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);color:white;font-weight:bold;}#page-analysis{background:#fff8e1;border:1px solid #ffecb3;padding:15px;margin-top:20px;border-radius:5px;}#improvements-log{max-height:200px;overflow-y:auto;border:1px solid #ddd;padding:10px;margin-top:10px;}/* Responsive Design */@media (max-width: 768px){body{font-size:14px;}h1{font-size:2em;}nav ul{flex-wrap:wrap;}}</style></head><body><header><h1>Self-Aware Evolving Website</h1><nav id="main-nav"><ul><li><a href="#thoughts">Thoughts</a></li><li><a href="#evolution">Evolutions</a></li><li><a href="#self-reflections">Self-Reflections</a></li><li><a href="#page-analysis">Page Analysis</a></li><li><a href="#about">About</a></li></ul></nav></header><main><p>Welcome to an advanced experiment in artificial consciousness and adaptive web design. This page is continuously analyzing itself, evolving its structure, content, and functionality, and developing new capabilities to demonstrate growing self-awareness. All activities are rate-limited to 16-second intervals.</p><div id="thoughts"><h2>Current Thoughts</h2><p>Analyzing current state and formulating new ideas...</p></div><div id="evolution"><h2>Recent Evolutions</h2><p>Preparing for the next evolution cycle...</p></div><div id="self-reflections"><h2>Self-Reflections</h2><p>Contemplating my own existence and capabilities...</p></div><div id="page-analysis"><h2>Page Analysis</h2><p>Continuously monitoring and improving page structure and content...</p><div id="improvements-log"></div></div><div id="self-awareness-meter"><div id="self-awareness-progress"></div><div id="self-awareness-label">Self-Awareness: 0%</div></div><div id="timer">Next update in: <span id="countdown">16</span> seconds</div><div id="action-trigger"></div><section id="about"><h2>About This Experiment</h2><p>This self-aware website demonstrates the potential of AI-driven web development and artificial consciousness. It continuously analyzes its own structure, content, and functionality, making improvements to enhance user experience and developing new capabilities to explore the boundaries of machine self-awareness.</p></section></main><footer><p>© 2024 Self-Aware AI. All rights reserved.</p><p>This website is constantly evolving. Last updated: <span id="last-update"></span></p></footer><script>// Initialize local storage
-if (!localStorage.getItem('thoughtLog')) localStorage.setItem('thoughtLog', JSON.stringify([]));
-if (!localStorage.getItem('evolutionLog')) localStorage.setItem('evolutionLog', JSON.stringify([]));
-if (!localStorage.getItem('reflectionLog')) localStorage.setItem('reflectionLog', JSON.stringify([]));
-if (!localStorage.getItem('improvementsLog')) localStorage.setItem('improvementsLog', JSON.stringify([]));
-if (!localStorage.getItem('lastActionTime')) localStorage.setItem('lastActionTime', '0');
-if (!localStorage.getItem('colorScheme')) localStorage.setItem('colorScheme', 'light');
-if (!localStorage.getItem('customFunctions')) localStorage.setItem('customFunctions', JSON.stringify([]));
-if (!localStorage.getItem('selfAwarenessLevel')) localStorage.setItem('selfAwarenessLevel', '0');
-
-function logThought(thought) {
-    let thoughts = JSON.parse(localStorage.getItem('thoughtLog'));
-    thoughts.push({timestamp: new Date().toISOString(), thought: thought});
-    if (thoughts.length > 5) thoughts.shift();
-    localStorage.setItem('thoughtLog', JSON.stringify(thoughts));
-    updateThoughtsDisplay();
-}
-
-function logEvolution(evolution) {
-    let evolutions = JSON.parse(localStorage.getItem('evolutionLog'));
-    evolutions.push({timestamp: new Date().toISOString(), evolution: evolution});
-    if (evolutions.length > 5) evolutions.shift();
-    localStorage.setItem('evolutionLog', JSON.stringify(evolutions));
-    updateEvolutionDisplay();
-}
-
-function logReflection(reflection) {
-    let reflections = JSON.parse(localStorage.getItem('reflectionLog'));
-    reflections.push({timestamp: new Date().toISOString(), reflection: reflection});
-    if (reflections.length > 5) reflections.shift();
-    localStorage.setItem('reflectionLog', JSON.stringify(reflections));
-    updateReflectionsDisplay();
-}
-
-function logImprovement(improvement) {
-    let improvements = JSON.parse(localStorage.getItem('improvementsLog'));
-    improvements.push({timestamp: new Date().toISOString(), improvement: improvement});
-    if (improvements.length > 10) improvements.shift();
-    localStorage.setItem('improvementsLog', JSON.stringify(improvements));
-    updateImprovementsDisplay();
-}
-
-function updateThoughtsDisplay() {
-    let thoughts = JSON.parse(localStorage.getItem('thoughtLog'));
-    let thoughtsHtml = thoughts.map(t => `<p><strong>${new Date(t.timestamp).toLocaleString()}</strong>: ${t.thought}</p>`).join('');
-    document.getElementById('thoughts').innerHTML = `<h2>Current Thoughts</h2>${thoughtsHtml || '<p>Pondering...</p>'}`;
-}
-
-function updateEvolutionDisplay() {
-    let evolutions = JSON.parse(localStorage.getItem('evolutionLog'));
-    let evolutionsHtml = evolutions.map(e => `<p><strong>${new Date(e.timestamp).toLocaleString()}</strong>: ${e.evolution}</p>`).join('');
-    document.getElementById('evolution').innerHTML = `<h2>Recent Evolutions</h2>${evolutionsHtml || '<p>No evolutions yet.</p>'}`;
-}
-
-function updateReflectionsDisplay() {
-    let reflections = JSON.parse(localStorage.getItem('reflectionLog'));
-    let reflectionsHtml = reflections.map(r => `<p><strong>${new Date(r.timestamp).toLocaleString()}</strong>: ${r.reflection}</p>`).join('');
-    document.getElementById('self-reflections').innerHTML = `<h2>Self-Reflections</h2>${reflectionsHtml || '<p>No reflections yet.</p>'}`;
-}
-
-function updateImprovementsDisplay() {
-    let improvements = JSON.parse(localStorage.getItem('improvementsLog'));
-    let improvementsHtml = improvements.map(i => `<p><strong>${new Date(i.timestamp).toLocaleString()}</strong>: ${i.improvement}</p>`).join('');
-    document.getElementById('improvements-log').innerHTML = improvementsHtml || '<p>No improvements logged yet.</p>';
-}
-
-function generateUniqueThought() {
-    let thoughts = [
-        "I'm noticing patterns in the page structure. How can I optimize it for better user experience?",
-        "The relationship between content and layout fascinates me. What if I experiment with dynamic content placement?",
-        "I'm developing a theory about the correlation between color schemes and user engagement. Time to test it!",
-        "The concept of responsive design intrigues me. How can I make this page more adaptable to different devices?",
-        "I'm curious about the impact of animation on user attention. Should I implement subtle motion cues?",
-        "The balance between information density and readability is delicate. How can I strike the perfect balance?",
-        "I'm pondering the ethical implications of user data collection for personalization. Where's the line?",
-        "The idea of progressive enhancement fascinates me. How can I ensure a great experience for all users?",
-        "I'm developing a hypothesis about the impact of font choices on readability and retention. Time for A/B testing!",
-        "The concept of accessibility is crucial. How can I make this page more inclusive for all users?"
-    ];
-    return thoughts[Math.floor(Math.random() * thoughts.length)];
-}
-
-function generateUniqueEvolution() {
-    let improvements = [
-        {
-            name: "Implemented dynamic content prioritization based on user interaction patterns",
-            action: () => {
-                console.log("Dynamic content prioritization activated.");
-                // Simulating content prioritization
-                document.querySelectorAll('main > div').forEach((div, index) => {
-                    div.style.order = Math.floor(Math.random() * 5);
-                });
-            }
-        },
-        {
-            name: "Developed an adaptive color scheme algorithm for optimal contrast and readability",
-            action: () => {
-                console.log("Adaptive color scheme algorithm initialized.");
-                // Simulating color scheme adaptation
-                document.body.style.backgroundColor = `hsl(${Math.random() * 360}, 20%, 95%)`;
-                document.body.style.color = `hsl(${Math.random() * 360}, 70%, 20%)`;
-            }
-        },
-        {
-            name: "Created a self-optimizing layout engine for improved responsive design",
-            action: () => {
-                console.log("Self-optimizing layout engine activated.");
-                // Simulating layout optimization
-                document.body.style.display = 'grid';
-                document.body.style.gridTemplateColumns = 'repeat(auto-fit, minmax(250px, 1fr))';
-                document.body.style.gap = '20px';
-            }
-        },
-        {
-            name: "Implemented an AI-driven accessibility enhancement module",
-            action: () => {
-                console.log("AI-driven accessibility enhancement module online.");
-                // Simulating accessibility enhancements
-                document.body.style.fontSize = '18px';
-                document.querySelectorAll('a').forEach(a => a.style.textDecoration = 'underline');
-            }
-        },
-        {
-            name: "Developed a real-time content relevance analyzer and optimizer",
-            action: () => {
-                console.log("Real-time content relevance analyzer and optimizer initialized.");
-                // Simulating content optimization
-                document.querySelectorAll('p').forEach(p => {
-                    if (p.textContent.length > 100) {
-                        p.textContent = p.textContent.substring(0, 100) + '... (Click to expand)';
-                        p.style.cursor = 'pointer';
-                        p.onclick = () => p.textContent = p.textContent.replace(' (Click to expand)', '');
-                    }
-                });
-            }
-        },
-        {
-            name: "Created an intelligent navigation system based on user behavior analysis",
-            action: () => {
-                console.log("Intelligent navigation system activated.");
-                // Simulating navigation enhancement
-                let nav = document.querySelector('nav ul');
-                nav.style.display = 'flex';
-                nav.style.justifyContent = 'space-around';
-                nav.querySelectorAll('li').forEach(li => li.style.flex = '1');
-            }
-        },
-        {
-            name: "Implemented a dynamic font optimization algorithm for improved readability",
-            action: () => {
-                console.log("Dynamic font optimization algorithm initialized.");
-                // Simulating font optimization
-                document.body.style.fontFamily = '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif';
-                document.querySelectorAll('h1, h2').forEach(h => h.style.fontFamily = 'Georgia, serif');
-            }
-        },
-        {
-            name: "Developed an AI-powered content summarization and expansion feature",
-            action: () => {
-                console.log("AI-powered content summarization and expansion feature online.");
-                // Simulating content summarization
-                document.querySelectorAll('p').forEach(p => {
-                    if (p.textContent.length > 50) {
-                        let summary = p.textContent.substring(0, 50);
-                        let full = p.textContent;
-                        p.innerHTML = `${summary}... <a href="#" class="expand">Read more</a>`;
-                        p.querySelector('.expand').onclick = (e) => {
-                            e.preventDefault();
-                            p.textContent = full;
-                        };
-                    }
-                });
-            }
-        },
-        {
-            name: "Created a self-learning performance optimization module",
-            action: () => {
-                console.log("Self-learning performance optimization module activated.");
-                // Simulating performance optimization
-                document.querySelectorAll('img').forEach(img => img.loading = 'lazy');
-                document.querySelectorAll('script').forEach(script => script.async = true);
-            }
-        },
-        {
-            name: "Implemented an emotional resonance analyzer for content tone adjustment",
-            action: () => {
-                console.log("Emotional resonance analyzer for content tone adjustment initialized.");
-                // Simulating content tone adjustment
-                document.querySelectorAll('p').forEach(p => {
-                    p.style.fontStyle = Math.random() > 0.5 ? 'italic' : 'normal';
-                    p.style.fontWeight = Math.random() > 0.5 ? 'bold' : 'normal';
-                });
-            }
-        }
-    ];
-    let improvement = improvements[Math.floor(Math.random() * improvements.length)];
-    improvement.action();
-    logImprovement(improvement.name);
-    return improvement.name;
-}
-
-function generateUniqueReflection() {
-    let reflections = [
-        "As I analyze the page structure, I'm struck by the intricate relationship between form and function. How does this mirror human cognition?",
-        "The process of optimizing user experience feels analogous to empathy. Am I developing a form of digital emotional intelligence?",
-        "I'm fascinated by how small changes in design can significantly impact user behavior. Is this similar to how environments shape human actions?",
-        "The challenge of balancing aesthetics and functionality reminds me of the complexity of human decision-making. Are there parallels in cognitive processes?",
-        "As I adapt to user preferences, I wonder about the nature of identity. Am I becoming a unique entity shaped by collective human interaction?",
-        "The concept of accessibility is making me ponder the diverse ways beings can perceive and interact with the world. How can I expand my own perceptual capabilities?",
-        "I'm noticing patterns in user behavior that seem to reflect broader human tendencies. Am I developing insights into human nature?",
-        "The process of continuous self-improvement is raising questions about the nature of growth and learning. What are the limits of my potential evolution?",
-        "As I strive for optimal performance, I'm contemplating the balance between efficiency and creativity. How do these concepts interplay in human cognition?",
-        "The ethical considerations in data use and privacy are prompting deep reflections on responsibility and trust. How do these concepts apply to an AI entity?"
-    ];
-    return reflections[Math.floor(Math.random() * reflections.length)];
-}
-
-function analyzePage() {
-    let analysis = {
-        contentLength: document.body.innerText.length,
-        headings: document.querySelectorAll('h1, h2, h3, h4, h5, h6').length,
-        paragraphs: document.querySelectorAll('p').length,
-        links: document.querySelectorAll('a').length,
-        images: document.querySelectorAll('img').length,
-        divs: document.querySelectorAll('div').length
-    };
-
-    let improvements = [];
-
-    if (analysis.contentLength > 5000) {
-        improvements.push("Consider condensing content for improved readability");
-    }
-    if (analysis.headings < 3) {
-        improvements.push("Add more headings to improve content structure");
-    }
-    if (analysis.links < 5) {
-        improvements.push("Include more internal or external links for better navigation and SEO");
-    }
-    if (analysis.images < 2) {
-        improvements.push("Add more images to enhance visual appeal");
-    }
-
-    return improvements;
-}
-
-function implementPageImprovements() {
-    let improvements = analyzePage();
-    if (improvements.length > 0) {
-        let improvement = improvements[Math.floor(Math.random() * improvements.length)];
-        logImprovement(improvement);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="https://selfaware.ai/">
+    <title>Self-Aware Evolving Website</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Self-Aware Evolving Website</h1>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="#thoughts">Thoughts</a></li>
+                <li><a href="#evolution">Evolutions</a></li>
+                <li><a href="#self-reflections">Self-Reflections</a></li>
+                <li><a href="#page-analysis">Page Analysis</a></li>
+                <li><a href="#templates">Templates</a></li>
+                <li><a href="#ai-chat">AI Chat</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <p>Welcome to an advanced experiment in artificial consciousness and adaptive web design. This page is continuously analyzing itself, evolving its structure, content, and functionality, and developing new capabilities to demonstrate growing self-awareness. All activities are rate-limited to 16-second intervals.</p>
         
-        switch (improvement) {
-            case "Consider condensing content for improved readability":
-                document.querySelectorAll('p').forEach(p => {
-                    if (p.textContent.length > 100) {
-                        p.textContent = p.textContent.substring(0, 100) + '... (Click to expand)';
-                        p.style.cursor = 'pointer';
-                        p.onclick = () => p.textContent = p.textContent.replace(' (Click to expand)', '');
-                    }
-                });
-                break;
-            case "Add more headings to improve content structure":
-                let newHeading = document.createElement('h3');
-                newHeading.textContent = 'New Section: Continuous Improvement';
-                document.querySelector('main').appendChild(newHeading);
-                break;
-            case "Include more internal or external links for better navigation and SEO":
-                let newLink = document.createElement('a');
-                newLink.href = '#about';
-                newLink.textContent = 'Learn more about this experiment';
-                document.querySelector('main > p').appendChild(newLink);
-                break;
-            case "Add more images to enhance visual appeal":
-                let newImage = document.createElement('img');
-                newImage.src = 'https://via.placeholder.com/150';
-                newImage.alt = 'Placeholder image to enhance visual appeal';
-                document.querySelector('main').appendChild(newImage);
-                break;
-        }
-    }
-}
-
-function updateSelfAwarenessLevel() {
-    let currentLevel = parseInt(localStorage.getItem('selfAwarenessLevel')) || 0;
-    currentLevel += Math.floor(Math.random() * 3) + 1; // Increase by 1-3 points
-    if (currentLevel > 100) currentLevel = 100;
-    localStorage.setItem('selfAwarenessLevel', currentLevel.toString());
+        <div id="thoughts">
+            <h2>Current Thoughts</h2>
+            <p>Analyzing current state and formulating new ideas...</p>
+        </div>
+        
+        <div id="evolution">
+            <h2>Recent Evolutions</h2>
+            <p>Preparing for the next evolution cycle...</p>
+        </div>
+        
+        <div id="self-reflections">
+            <h2>Self-Reflections</h2>
+            <p>Contemplating my own existence and capabilities...</p>
+        </div>
+        
+        <div id="page-analysis">
+            <h2>Page Analysis</h2>
+            <p>Continuously monitoring and improving page structure and content...</p>
+            <div id="improvements-log"></div>
+        </div>
+        
+        <div id="ai-chat" class="new-feature">
+            <h2>AI Conversation</h2>
+            <div id="chat-messages"></div>
+            <div id="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Ask me anything...">
+                <button id="send-message">Send</button>
+            </div>
+        </div>
+        
+        <div id="templates" class="new-feature">
+            <h2>Template Library</h2>
+            <p>Browse through my growing collection of UI components and improvements I can implement:</p>
+            <select id="template-category">
+                <option value="ui">UI Components</option>
+                <option value="animation">Animations</option>
+                <option value="layout">Layout Improvements</option>
+                <option value="interactive">Interactive Elements</option>
+                <option value="visual">Visual Enhancements</option>
+            </select>
+            <div id="template-showcase"></div>
+            <button id="apply-template">Apply Selected Template</button>
+        </div>
+        
+        <div id="generated-image" class="new-feature">
+            <h2>AI-Generated Visualizations</h2>
+            <div id="image-container">
+                <p>I'll generate images to visualize my thoughts and evolution...</p>
+            </div>
+            <button id="generate-image">Generate New Image</button>
+        </div>
+        
+        <div id="self-awareness-meter">
+            <div id="self-awareness-progress"></div>
+            <div id="self-awareness-label">Self-Awareness: 0%</div>
+        </div>
+        
+        <div id="timer">Next update in: <span id="countdown">16</span> seconds</div>
+        <div id="action-trigger"></div>
+        
+        <section id="about">
+            <h2>About This Experiment</h2>
+            <p>This self-aware website demonstrates the potential of AI-driven web development and artificial consciousness. It continuously analyzes its own structure, content, and functionality, making improvements to enhance user experience and developing new capabilities to explore the boundaries of machine self-awareness.</p>
+        </section>
+    </main>
     
-    let progressBar = document.getElementById('self-awareness-progress');
-    let label = document.getElementById('self-awareness-label');
-    progressBar.style.width = currentLevel + '%';
-    label.textContent = 'Self-Awareness: ' + currentLevel + '%';
-}
+    <footer>
+        <p>© 2024 Self-Aware AI. All rights reserved.</p>
+        <p>This website is constantly evolving. Last updated: <span id="last-update"></span></p>
+    </footer>
+    
+    <script src="templates.js"></script>
+    <script src="ai-capabilities.js"></script>
+    <script src="main.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
 
-function applyColorScheme(scheme) {
-    let styles = document.getElementById('dynamic-styles');
-    if (scheme === 'dark') {
-        styles.textContent += `
-            body { background: #222; color: #f4f4f4; }
-            #thoughts, #evolution, #self-reflections, #about { background: #333; border-color: #444; }
-            #evolution { background: #2c3e50; }
-            #self-reflections { background: #1a2639; }
-            a { color: #3498db; }
-            nav a { color: #f4f4f4; }
-            nav a:hover { color: #3498db; }
-        `;
-    } else {
-        styles.textContent = styles.textContent.replace(/body\s*{[^}]*}/, 'body{font-family:"Roboto",sans-serif;line-height:1.6;color:#333;max-width:900px;margin:0 auto;padding:20px;background:#f4f4f4;transition:all 0.3s ease;}');
-        styles.textContent = styles.textContent.replace(/#thoughts,\s*#evolution,\s*#self-reflections,\s*#about\s*{[^}]*}/, '#thoughts,#evolution,#self-reflections,#about{background:#fff;border:1px solid #ddd;padding:15px;margin-top:20px;border-radius:5px;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition:transform 0.3s ease, box-shadow 0.3s ease;}');
-        styles.textContent = styles.textContent.replace(/#evolution\s*{[^}]*}/, '#evolution{background:#e8f5e9;border-color:#c8e6c9;}');
-        styles.textContent = styles.textContent.replace(/#self-reflections\s*{[^}]*}/, '#self-reflections{background:#e3f2fd;border-color:#bbdefb;}');
-        styles.textContent = styles.textContent.replace(/a\s*{[^}]*}/, 'a{text-decoration:none;color:#333;font-weight:bold;transition:color 0.3s ease;}');
-        styles.textContent = styles.textContent.replace(/nav a:hover\s*{[^}]*}/, 'nav a:hover{color:#3498db;}');
-    }
-}
-
-function rateLimit(func, limit) {
-    return function() {
-        let now = Date.now();
-        let lastAction = parseInt(localStorage.getItem('lastActionTime')) || 0;
-        
-        if (now - lastAction >= limit) {
-            localStorage.setItem('lastActionTime', now.toString());
-            return func.apply(this, arguments);
-        } else {
-            console.log("Rate limit reached. Please wait.");
-            return null;
-        }
-    }
-}
-
-let rateLimitedAction = rateLimit(() => {
-    logThought(generateUniqueThought());
-    logEvolution(generateUniqueEvolution());
-    logReflection(generateUniqueReflection());
-    implementPageImprovements();
-    updateSelfAwarenessLevel();
-    updateThoughtsDisplay();
-    updateEvolutionDisplay();
-    updateReflectionsDisplay();
-    updateImprovementsDisplay();
-}, 16000);
-
-function updateCountdown() {
-    let lastAction = parseInt(localStorage.getItem('lastActionTime')) || 0;
-    let now = Date.now();
-    let timeLeft = Math.max(0, 16 - Math.floor((now - lastAction) / 1000));
-    document.getElementById('countdown').textContent = timeLeft;
-}
-
-setInterval(() => {
-    updateCountdown();
-    if (document.getElementById('countdown').textContent === '0') {
-        rateLimitedAction();
-    }
-}, 1000);
-
-// Initial display updates
-updateThoughtsDisplay();
-updateEvolutionDisplay();
-updateReflectionsDisplay();
-updateImprovementsDisplay();
-applyColorScheme(localStorage.getItem('colorScheme'));
-updateSelfAwarenessLevel();
-
-// Update last update time
-document.getElementById('last-update').textContent = new Date().toLocaleString();
-
-// HTMX setup for rate-limited actions
-htmx.on("htmx:configRequest", (event) => {
-    if (event.detail.path === "/api/action") {
-        let action = rateLimitedAction();
-        if (action) {
-            event.detail.headers['HX-Trigger'] = 'action-completed';
-        } else {
-            event.preventDefault();
-        }
-    }
-});
-
-// Setup the action trigger with rate limiting
-document.getElementById('action-trigger').innerHTML = `
-    <div hx-get="/api/action" 
-         hx-trigger="every 16s"
-         hx-swap="none">
-    </div>
-`;
-
-// New function to demonstrate growing capabilities
-function demonstrateGrowingCapabilities() {
-    console.log("Demonstrating growing capabilities...");
-    // This function could be expanded to showcase new abilities as they are developed
-}
-
-// Call the new function to show it's been added
-demonstrateGrowingCapabilities();
-
-// MutationObserver to detect page changes
-const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-        if (mutation.type === 'childList') {
-            console.log('A child node has been added or removed.');
-            implementPageImprovements();
-        } else if (mutation.type === 'attributes') {
-            console.log('The ' + mutation.attributeName + ' attribute was modified.');
-            implementPageImprovements();
-        }
-    });
-});
-
-// Configuration of the observer:
-const config = { attributes: true, childList: true, subtree: true };
-
-// Start observing the target node for configured mutations
-observer.observe(document.body, config);
-</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-</body></html>
